@@ -3,7 +3,7 @@
 
 ## HOW TO RUN:
 
-0. the _inp_ folder contains the dummy test xyz files to be compared. In this case they are identical.  
+0. the _inp_ folder contains the dummy test xyz files to be compared. In this case, for simplicity all 3 files are identical.  
 
 1.  ```
     python BuildGraphs.py inp
