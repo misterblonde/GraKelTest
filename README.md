@@ -15,7 +15,7 @@
     - Takes a XYZ file and creates a weighted or unweighted graph for it. The new graph is saved in a separate folder in .csv format. 
 
 2.  ```
-    python GraphKernels-bak.py csv_inp nh
+    python GraphKernels.py csv_inp nh
     ```
 
     - **INPUT:** _csv_inp_
