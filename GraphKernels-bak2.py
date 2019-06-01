@@ -17,13 +17,13 @@ req_kernel = str(sys.argv[2])  #  eg. "nh"
 
 # kernels sp kernel for now
 if req_kernel == "sp": #or "shortest_path":
-    kernel = grakel.GraphKernel(kernel={"name": "shortest_path"}, verbose=True, normalize=True)
+    kernel = grakel.GraphKernel(kernel={"name": "shortest_path"}, normalize=True)
 elif req_kernel == "pm": #or "pyramid_match":
-    kernel = grakel.GraphKernel(kernel={"name": "pyramid_match"}, verbose=True, normalize=True) # with_labels=True, L=2
+    kernel = grakel.GraphKernel(kernel={"name": "pyramid_match"}, normalize=True) # with_labels=True, L=2
 elif req_kernel == "rw": #or "random_walk":
-    kernel = grakel.GraphKernel(kernel={"name": "random_walk"}, verbose=True, normalize=True)
+    kernel = grakel.GraphKernel(kernel={"name": "random_walk"}, normalize=True)
 elif req_kernel == "nh": #or "neighborhood_hash":
-    kernel = grakel.GraphKernel(kernel={"name": "neighborhood_hash"}, verbose=True, normalize=True)
+    kernel = grakel.GraphKernel(kernel={"name": "neighborhood_hash"}, normalize=True)
 else:
     print("Error: The kernel you're requesting doesn't exist.")
     print("Possible kernels are: shortest_path (sp), pyramid_match (pm), random_walk (rw), neighborhood_hash (nh)")
@@ -37,25 +37,15 @@ else:
 def label_maker(n_atoms,shell_size, c_end):
     """
     Generate Hydrocarbon Node labels for GraKel library
-    2,2 -dicyanohelicene here
     """
     node_labels = {}
     atom_no =0
     for n_mols in range(0, shell_size):
-        ncount = 0
+
         for i in range(0,n_atoms):
 
-            if i <= c_end -1:
+            if i < c_end:
                 node_labels[atom_no]= 'C'
-
-            elif i < c_end+2:
-                node_labels[atom_no] = 'N'
-            #
-            # elif i == c_end + 1:
-            #     node_labels[atom_no]= 'C'
-            #
-            # elif i == c_end + 2:
-            #     node_labels[atom_no] = 'N'
 
             else:
                 node_labels[atom_no] = 'H'
@@ -88,7 +78,7 @@ def KernelSimilarity(new_graphs, node_labels):
     start = time.time()
     out = kernel.fit_transform(graphs)
     end = time.time()
-    print("Time needed for Reference Kernel computation (s): ", (end - start).round())
+    print("Time needed for Reference Kernel computation (s): ", end - start)
 
     # Write Matrix to file
     pd.DataFrame(out, index=new_graphs, columns=new_graphs).to_csv(f"{req_kernel}_{inp_folder}_SimilarityKernel.csv", header=True, index=True)
@@ -101,7 +91,7 @@ if __name__ == '__main__':
     """
     Repeating atom labels (C and H )
     """
-    node_labels = label_maker(n_atoms=44, shell_size=15, c_end=28)
+    node_labels = label_maker(n_atoms=26, shell_size=8, c_end=10)
     #n_atoms                # number of atoms in single molecule
     #shell_size             # number of neighbouring moleucles in shell
     #c_end                  # position of last carbon atom in XYZ file // c per mol
