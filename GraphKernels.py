@@ -15,8 +15,8 @@ inp_folder = str(sys.argv[1])  # eg. csv_inp
 # Kernel Selection:
 req_kernel = str(sys.argv[2])  #  eg. "nh"
 
-L = 12
-d = 8
+L = 6#12
+d = 4#8
 # kernels sp kernel for now
 # settings inside kernel dict key in string quotation marks, then setting eg pm
 # "L":2
@@ -105,7 +105,7 @@ if __name__ == '__main__':
     """
     Repeating atom labels (C and H )
     """
-    node_labels = label_maker(n_atoms=44, shell_size=15, c_end=28)
+    node_labels = label_maker(n_atoms=44, shell_size=2, c_end=28)
     #n_atoms                # number of atoms in single molecule
     #shell_size             # number of neighbouring moleucles in shell
     #c_end                  # position of last carbon atom in XYZ file // c per mol
