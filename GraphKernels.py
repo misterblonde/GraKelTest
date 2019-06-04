@@ -3,6 +3,7 @@ import pandas as pd
 import os, re, sys
 import grakel
 import time
+from grakel.kernels import PyramidMatch
 
 ##############################################################################
 
@@ -14,12 +15,15 @@ inp_folder = str(sys.argv[1])  # eg. csv_inp
 # Kernel Selection:
 req_kernel = str(sys.argv[2])  #  eg. "nh"
 
-
+L = 12
+d = 8
 # kernels sp kernel for now
+# settings inside kernel dict key in string quotation marks, then setting eg pm
+# "L":2
 if req_kernel == "sp": #or "shortest_path":
     kernel = grakel.GraphKernel(kernel={"name": "shortest_path"}, verbose=True, normalize=True)
 elif req_kernel == "pm": #or "pyramid_match":
-    kernel = grakel.GraphKernel(kernel={"name": "pyramid_match"}, verbose=True, normalize=True) # with_labels=True, L=2
+    kernel = grakel.GraphKernel(kernel={"name": "pyramid_match", "L":int(L), "d":int(d)}, verbose=True, normalize=True) # with_labels=True, L=2
 elif req_kernel == "rw": #or "random_walk":
     kernel = grakel.GraphKernel(kernel={"name": "random_walk"}, verbose=True, normalize=True)
 elif req_kernel == "nh": #or "neighborhood_hash":
@@ -88,10 +92,10 @@ def KernelSimilarity(new_graphs, node_labels):
     start = time.time()
     out = kernel.fit_transform(graphs)
     end = time.time()
-    print("Time needed for Reference Kernel computation (s): ", (end - start).round())
+    print("Time needed for Reference Kernel computation (s): ", (end - start))
 
     # Write Matrix to file
-    pd.DataFrame(out, index=new_graphs, columns=new_graphs).to_csv(f"{req_kernel}_{inp_folder}_SimilarityKernel.csv", header=True, index=True)
+    pd.DataFrame(out, index=new_graphs, columns=new_graphs).to_csv(f"{req_kernel}_{inp_folder}_SimilarityKernel{L}_{d}.csv", header=True, index=True)
 
 
 #####################################################################
